@@ -10,6 +10,10 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+// Routes
+const authRoutes = require('./routers/auth');
+app.use('/api/auth', authRoutes);
+
 // MongoDB connection
 console.log('Attempting to connect to MongoDB...');
 console.log('MongoDB URI:', process.env.MONGODB_URI ? 'Found' : 'Not found');

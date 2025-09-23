@@ -1,56 +1,61 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
+import LoginForm from './components/LoginForm';
+import RegisterForm from './components/RegisterForm';
+import Dashboard from './components/Dashboard';
+import LandingPage from './components/LandingPage';
 import './App.css';
 
 function App() {
-  const [backendStatus, setBackendStatus] = useState('Checking...');
-  const [backendData, setBackendData] = useState(null);
-
-  useEffect(() => {
-    // Test backend connection
-    const testBackend = async () => {
-      try {
-        const response = await axios.get('/health');
-        setBackendStatus('Connected ✅');
-        setBackendData(response.data);
-      } catch (error) {
-        setBackendStatus('Disconnected ❌');
-        console.error('Backend connection failed:', error);
-      }
-    };
-
-    testBackend();
-  }, []);
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>AI Resume Builder</h1>
-        <p>Frontend and Backend Connection Test</p>
-        
-        <div className="status-container">
-          <h2>Backend Status: {backendStatus}</h2>
-          {backendData && (
-            <div className="backend-info">
-              <p><strong>Status:</strong> {backendData.status}</p>
-              <p><strong>Timestamp:</strong> {new Date(backendData.timestamp).toLocaleString()}</p>
-              <p><strong>Uptime:</strong> {Math.floor(backendData.uptime)} seconds</p>
-              <p><strong>Database:</strong> {backendData.database}</p>
-              <p><strong>MongoDB:</strong> {backendData.mongodb}</p>
-            </div>
-          )}
+    <AuthProvider>
+      <Router>
+        <div className="App">
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 4000,
+              style: {
+                background: '#363636',
+                color: '#fff',
+              },
+              success: {
+                duration: 3000,
+                iconTheme: {
+                  primary: '#61dafb',
+                  secondary: '#fff',
+                },
+              },
+              error: {
+                duration: 5000,
+                iconTheme: {
+                  primary: '#e74c3c',
+                  secondary: '#fff',
+                },
+              },
+            }}
+          />
+          
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/register" element={<RegisterForm />} />
+            <Route 
+              path="/dashboard" 
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
         </div>
-
-        <div className="test-buttons">
-          <button 
-            onClick={() => window.location.reload()}
-            className="test-btn"
-          >
-            Refresh Test
-          </button>
-        </div>
-      </header>
-    </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
