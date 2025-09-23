@@ -1,9 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import JobTracker from './JobTracker';
 import './Dashboard.css';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
+  const [currentView, setCurrentView] = useState('dashboard');
+
+  const handleNavigation = (view) => {
+    setCurrentView(view);
+  };
+
+  const handleBackToDashboard = () => {
+    setCurrentView('dashboard');
+  };
+
+  if (currentView === 'job-tracker') {
+    return (
+      <div className="dashboard">
+        <header className="dashboard-header">
+          <div className="header-content">
+            <div className="nav-section">
+              <button 
+                className="back-btn"
+                onClick={handleBackToDashboard}
+              >
+                ← Back to Dashboard
+              </button>
+              <h1>Job Tracker</h1>
+            </div>
+            <div className="user-info">
+              <span>Welcome, {user?.name}</span>
+              <button onClick={logout} className="logout-btn">
+                Logout
+              </button>
+            </div>
+          </div>
+        </header>
+        <JobTracker />
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard">
@@ -37,7 +74,12 @@ const Dashboard = () => {
             <div className="feature-icon">🎯</div>
             <h3>Job Tracker</h3>
             <p>Track your job applications and manage opportunities</p>
-            <button className="feature-btn">View Jobs</button>
+            <button 
+              className="feature-btn"
+              onClick={() => handleNavigation('job-tracker')}
+            >
+              View Jobs
+            </button>
           </div>
 
           <div className="feature-card">
