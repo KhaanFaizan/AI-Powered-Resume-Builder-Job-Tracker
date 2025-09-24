@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import JobTracker from './JobTracker';
+import AIAnalysis from './AIAnalysis';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -42,6 +43,33 @@ const Dashboard = () => {
     );
   }
 
+  if (currentView === 'ai-analysis') {
+    return (
+      <div className="dashboard">
+        <header className="dashboard-header">
+          <div className="header-content">
+            <div className="nav-section">
+              <button 
+                className="back-btn"
+                onClick={handleBackToDashboard}
+              >
+                ← Back to Dashboard
+              </button>
+              <h1>AI Resume Analysis</h1>
+            </div>
+            <div className="user-info">
+              <span>Welcome, {user?.name}</span>
+              <button onClick={logout} className="logout-btn">
+                Logout
+              </button>
+            </div>
+          </div>
+        </header>
+        <AIAnalysis />
+      </div>
+    );
+  }
+
   return (
     <div className="dashboard">
       <header className="dashboard-header">
@@ -64,10 +92,15 @@ const Dashboard = () => {
 
         <div className="features-grid">
           <div className="feature-card">
-            <div className="feature-icon">📝</div>
-            <h3>Resume Builder</h3>
-            <p>Create professional resumes with our AI-powered builder</p>
-            <button className="feature-btn">Get Started</button>
+            <div className="feature-icon">🤖</div>
+            <h3>AI Resume Analysis</h3>
+            <p>Analyze your resume with AI to get insights and improvements</p>
+            <button 
+              className="feature-btn"
+              onClick={() => handleNavigation('ai-analysis')}
+            >
+              Analyze Resume
+            </button>
           </div>
 
           <div className="feature-card">

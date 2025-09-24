@@ -166,6 +166,7 @@ const JobTracker = () => {
     }
   };
 
+
   // Get status color
   const getStatusColor = (status) => {
     const colors = {
@@ -377,6 +378,7 @@ const JobTracker = () => {
           </div>
         )}
       </div>
+
 
       {/* Job Form Modal */}
       {showForm && (
