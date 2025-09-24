@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import JobTracker from './JobTracker';
 import AIAnalysis from './AIAnalysis';
+import Analytics from './Analytics';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -70,6 +71,33 @@ const Dashboard = () => {
     );
   }
 
+  if (currentView === 'analytics') {
+    return (
+      <div className="dashboard">
+        <header className="dashboard-header">
+          <div className="header-content">
+            <div className="nav-section">
+              <button 
+                className="back-btn"
+                onClick={handleBackToDashboard}
+              >
+                ← Back to Dashboard
+              </button>
+              <h1>Analytics Dashboard</h1>
+            </div>
+            <div className="user-info">
+              <span>Welcome, {user?.name}</span>
+              <button onClick={logout} className="logout-btn">
+                Logout
+              </button>
+            </div>
+          </div>
+        </header>
+        <Analytics />
+      </div>
+    );
+  }
+
   return (
     <div className="dashboard">
       <header className="dashboard-header">
@@ -119,7 +147,12 @@ const Dashboard = () => {
             <div className="feature-icon">📊</div>
             <h3>Analytics</h3>
             <p>Get insights into your job search performance</p>
-            <button className="feature-btn">View Analytics</button>
+            <button 
+              className="feature-btn"
+              onClick={() => handleNavigation('analytics')}
+            >
+              View Analytics
+            </button>
           </div>
 
           <div className="feature-card">
@@ -145,6 +178,8 @@ const Dashboard = () => {
               <span className="detail-label">Role:</span>
               <span className="detail-value">{user?.role}</span>
             </div>
+          </div>
+          <div className="user-details-row">
             <div className="detail-item">
               <span className="detail-label">Last Login:</span>
               <span className="detail-value">
