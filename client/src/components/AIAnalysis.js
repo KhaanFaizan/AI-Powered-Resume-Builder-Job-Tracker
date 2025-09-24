@@ -8,8 +8,8 @@ import './AIAnalysis.css';
 const AIAnalysis = () => {
   const { token } = useAuth();
   const [formData, setFormData] = useState({
-    resumeText: '',
-    jobDescription: ''
+    resumeText: 'John Doe\nFull-Stack Developer\n\nExperience:\n- 5+ years developing web applications using React, Node.js, and JavaScript\n- Led development of e-commerce platform serving 10,000+ users\n- Experience with SQL databases and RESTful API design\n- Strong problem-solving skills and team collaboration\n\nEducation:\n- Bachelor of Computer Science, University of Technology\n\nSkills:\n- JavaScript, React, Node.js, SQL, Git',
+    jobDescription: 'Senior Full-Stack Developer\n\nRequirements:\n- 5+ years experience with modern JavaScript frameworks (React, Vue, Angular)\n- Strong backend development skills (Node.js, Python, or Java)\n- Experience with cloud platforms (AWS, Azure, GCP)\n- Knowledge of containerization (Docker, Kubernetes)\n- TypeScript experience preferred\n- Experience with microservices architecture\n- Strong communication and leadership skills\n\nResponsibilities:\n- Design and develop scalable web applications\n- Lead technical decisions and mentor junior developers\n- Collaborate with cross-functional teams\n- Implement best practices for code quality and testing'
   });
   const [loading, setLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
@@ -33,7 +33,7 @@ const AIAnalysis = () => {
     }));
   };
 
-  // Handle form submission
+  // Handle form submission with demo data
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -44,14 +44,32 @@ const AIAnalysis = () => {
 
     try {
       setLoading(true);
-      const response = await api.post('/ai/analyze', {
-        resumeText: formData.resumeText,
-        jobDescription: formData.jobDescription
-      });
+      
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Demo analysis data
+      const demoAnalysisData = {
+        summary: "Experienced Full-Stack Developer with 5+ years of expertise in React, Node.js, and cloud technologies. Proven track record of delivering scalable web applications and leading development teams. Strong background in modern JavaScript frameworks, database design, and DevOps practices.",
+        missingKeywords: [
+          "TypeScript",
+          "Docker",
+          "Kubernetes", 
+          "AWS",
+          "Microservices",
+          "GraphQL",
+          "Redis",
+          "MongoDB",
+          "Jest",
+          "CI/CD"
+        ],
+        matchScore: 78,
+        improvementSuggestions: "To improve your match score, consider adding experience with TypeScript for better code quality, Docker for containerization, and AWS for cloud deployment. Highlight your experience with testing frameworks like Jest and include specific metrics about project impact and team leadership. Consider adding a projects section showcasing your technical skills with live demos or GitHub links."
+      };
 
-      setAnalysisData(response.data);
+      setAnalysisData(demoAnalysisData);
       setShowResults(true);
-      toast.success('AI analysis completed successfully!');
+      toast.success('Resume analysis completed successfully! (Demo Mode)');
     } catch (error) {
       console.error('Error analyzing resume:', error);
       toast.error('Failed to analyze resume. Please try again.');
@@ -90,7 +108,7 @@ const AIAnalysis = () => {
                 name="resumeText"
                 value={formData.resumeText}
                 onChange={handleInputChange}
-                placeholder="Paste your resume content here... Include your experience, skills, education, and achievements."
+                placeholder="Paste your resume content here... Include your experience, skills, education, and achievements. (Sample text is pre-filled for demo)"
                 rows="8"
                 required
                 className="resume-textarea"
@@ -110,7 +128,7 @@ const AIAnalysis = () => {
                 name="jobDescription"
                 value={formData.jobDescription}
                 onChange={handleInputChange}
-                placeholder="Paste the job description you want to match your resume against..."
+                placeholder="Paste the job description you want to match your resume against... (Sample job description is pre-filled for demo)"
                 rows="6"
                 required
                 className="job-textarea"

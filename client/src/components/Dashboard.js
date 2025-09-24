@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import JobTracker from './JobTracker';
 import AIAnalysis from './AIAnalysis';
 import Analytics from './Analytics';
+import Settings from './Settings';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -98,6 +99,33 @@ const Dashboard = () => {
     );
   }
 
+  if (currentView === 'settings') {
+    return (
+      <div className="dashboard">
+        <header className="dashboard-header">
+          <div className="header-content">
+            <div className="nav-section">
+              <button 
+                className="back-btn"
+                onClick={handleBackToDashboard}
+              >
+                ← Back to Dashboard
+              </button>
+              <h1>Settings</h1>
+            </div>
+            <div className="user-info">
+              <span>Welcome, {user?.name}</span>
+              <button onClick={logout} className="logout-btn">
+                Logout
+              </button>
+            </div>
+          </div>
+        </header>
+        <Settings />
+      </div>
+    );
+  }
+
   return (
     <div className="dashboard">
       <header className="dashboard-header">
@@ -159,7 +187,12 @@ const Dashboard = () => {
             <div className="feature-icon">⚙️</div>
             <h3>Settings</h3>
             <p>Manage your account and preferences</p>
-            <button className="feature-btn">Settings</button>
+            <button 
+              className="feature-btn"
+              onClick={() => handleNavigation('settings')}
+            >
+              Open Settings
+            </button>
           </div>
         </div>
 

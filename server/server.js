@@ -14,10 +14,12 @@ app.use(express.json());
 const authRoutes = require('./routers/auth');
 const jobRoutes = require('./routers/jobs');
 const aiRoutes = require('./routers/ai');
+const settingsRoutes = require('./routers/settings');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/settings', settingsRoutes);
 
 // MongoDB connection
 console.log('Attempting to connect to MongoDB...');
