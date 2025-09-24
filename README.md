@@ -7,6 +7,7 @@ A comprehensive MERN stack application that leverages artificial intelligence to
 ![React](https://img.shields.io/badge/React-18.0-blue?style=for-the-badge&logo=react)
 ![Node.js](https://img.shields.io/badge/Node.js-18.0-green?style=for-the-badge&logo=node.js)
 ![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green?style=for-the-badge&logo=mongodb)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Online-brightgreen?style=for-the-badge&logo=render)](https://ai-powered-resume-builder-job-tracker.onrender.com/)
 
 ## ✨ Features
 
@@ -30,6 +31,17 @@ A comprehensive MERN stack application that leverages artificial intelligence to
 - **Job Application Overview** - Monitor all job applications across users
 - **Role Management** - Promote users to admin (single admin system)
 - **System Health Monitoring** - Real-time system status and performance metrics
+
+## 🌐 Live Demo
+
+**🚀 [Try the AI Resume Builder Now!](https://ai-powered-resume-builder-job-tracker.onrender.com/)**
+
+Experience the full application with all features:
+- ✅ User Registration & Login
+- ✅ AI Resume Analysis
+- ✅ Job Application Tracking
+- ✅ Professional Analytics
+- ✅ Admin Dashboard (for admin users)
 
 ## 🛠️ Tech Stack
 
