@@ -1,11 +1,10 @@
 services:
-  # Backend Service
   - type: web
-    name: ai-resume-builder-api
+    name: ai-resume-builder
     env: node
     plan: free
-    buildCommand: cd server && npm install
-    startCommand: cd server && npm start
+    buildCommand: npm install && cd client && npm install && npm run build
+    startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
@@ -21,19 +20,6 @@ services:
         value: 10000
     healthCheckPath: /health
 
-  # Frontend Service
-  - type: web
-    name: ai-resume-builder-web
-    env: static
-    buildCommand: cd client && npm install && npm run build
-    staticPublishPath: ./client/build
-    envVars:
-      - key: REACT_APP_API_URL
-        value: https://ai-resume-builder-api.onrender.com
-
-  # Database
-  - type: pserv
-    name: ai-resume-builder-db
+databases:
+  - name: ai-resume-builder-db
     plan: free
-    databaseName: ai_resume_builder
-    databaseUser: ai_resume_user

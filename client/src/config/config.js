@@ -4,8 +4,8 @@ const config = {
     API_URL: 'http://localhost:5000'
   },
   production: {
-    // Your deployed backend URL
-    API_URL: process.env.REACT_APP_API_URL || 'https://ai-powered-resume-builder-job-tracker.onrender.com'
+    // For single deployment, API and frontend are on same domain
+    API_URL: process.env.REACT_APP_API_URL || window.location.origin
   }
 };
 
