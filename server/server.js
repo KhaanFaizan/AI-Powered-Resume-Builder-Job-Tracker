@@ -11,6 +11,7 @@ const corsOptions = {
   origin: [
     'http://localhost:3000',
     'https://ai-resume-builder-web.onrender.com',
+    'https://ai-resume-builder-frontend.onrender.com',
     process.env.CLIENT_URL
   ].filter(Boolean),
   credentials: true
