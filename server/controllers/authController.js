@@ -128,6 +128,94 @@ const login = async (req, res) => {
   }
 };
 
+// Register Admin (only if no admin exists)
+const registerAdmin = async (req, res) => {
+  try {
+    // Check for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: errors.array()
+      });
+    }
+
+    const { name, email, password } = req.body;
+
+    // Check if admin already exists
+    const canPromote = await User.canPromoteToAdmin();
+    if (!canPromote) {
+      return res.status(403).json({
+        success: false,
+        message: 'Admin already exists. Only one admin is allowed.'
+      });
+    }
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: 'User already exists with this email'
+      });
+    }
+
+    // Create new admin user
+    const user = new User({
+      name,
+      email,
+      password,
+      role: 'admin',
+      adminPromotedAt: new Date()
+    });
+
+    await user.save();
+
+    // Generate token
+    const token = generateToken(user._id);
+
+    res.status(201).json({
+      success: true,
+      message: 'Admin registered successfully',
+      data: {
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role
+        },
+        token
+      }
+    });
+  } catch (error) {
+    console.error('Admin registration error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error during admin registration'
+    });
+  }
+};
+
+// Check if admin can be registered
+const canRegisterAdmin = async (req, res) => {
+  try {
+    const canPromote = await User.canPromoteToAdmin();
+    res.json({
+      success: true,
+      data: {
+        canRegisterAdmin: canPromote
+      }
+    });
+  } catch (error) {
+    console.error('Check admin registration error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error while checking admin registration'
+    });
+  }
+};
+
 // Get Current User
 const getUser = async (req, res) => {
   try {
@@ -159,5 +247,7 @@ const getUser = async (req, res) => {
 module.exports = {
   register,
   login,
+  registerAdmin,
+  canRegisterAdmin,
   getUser
 };

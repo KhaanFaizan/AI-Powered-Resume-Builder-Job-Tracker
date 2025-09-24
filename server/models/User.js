@@ -38,6 +38,27 @@ const userSchema = new mongoose.Schema({
   },
   lastLogin: {
     type: Date
+  },
+  isActive: {
+    type: Boolean,
+    default: true
+  },
+  loginCount: {
+    type: Number,
+    default: 0
+  },
+  lastActivity: {
+    type: Date,
+    default: Date.now
+  },
+  adminPromotedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    default: null
+  },
+  adminPromotedAt: {
+    type: Date,
+    default: null
   }
 }, {
   timestamps: true
@@ -59,6 +80,19 @@ userSchema.pre('save', async function(next) {
 // Compare password method
 userSchema.methods.comparePassword = async function(candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
+};
+
+// Check if user can be promoted to admin
+userSchema.statics.canPromoteToAdmin = async function() {
+  const adminCount = await this.countDocuments({ role: 'admin' });
+  return adminCount === 0; // Only allow if no admin exists
+};
+
+// Update last activity
+userSchema.methods.updateActivity = function() {
+  this.lastActivity = new Date();
+  this.loginCount += 1;
+  return this.save();
 };
 
 // Remove password from JSON output

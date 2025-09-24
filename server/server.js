@@ -15,11 +15,13 @@ const authRoutes = require('./routers/auth');
 const jobRoutes = require('./routers/jobs');
 const aiRoutes = require('./routers/ai');
 const settingsRoutes = require('./routers/settings');
+const adminRoutes = require('./routers/admin');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/settings', settingsRoutes);
+app.use('/api/admin', adminRoutes);
 
 // MongoDB connection
 console.log('Attempting to connect to MongoDB...');
