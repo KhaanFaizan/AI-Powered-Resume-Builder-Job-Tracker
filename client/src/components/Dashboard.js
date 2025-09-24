@@ -4,6 +4,7 @@ import JobTracker from './JobTracker';
 import AIAnalysis from './AIAnalysis';
 import Analytics from './Analytics';
 import Settings from './Settings';
+import AdminDashboard from './AdminDashboard';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -126,6 +127,10 @@ const Dashboard = () => {
     );
   }
 
+  if (currentView === 'admin') {
+    return <AdminDashboard />;
+  }
+
   return (
     <div className="dashboard">
       <header className="dashboard-header">
@@ -194,6 +199,20 @@ const Dashboard = () => {
               Open Settings
             </button>
           </div>
+
+          {user?.role === 'admin' && (
+            <div className="feature-card admin-card">
+              <div className="feature-icon">👑</div>
+              <h3>Admin Dashboard</h3>
+              <p>Manage users, view analytics, and system administration</p>
+              <button 
+                className="feature-btn admin-btn"
+                onClick={() => handleNavigation('admin')}
+              >
+                Admin Panel
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="user-details">

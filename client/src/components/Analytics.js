@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import axios from 'axios';
+import api from '../config/api';
 import toast from 'react-hot-toast';
 import './Analytics.css';
 
@@ -12,13 +12,7 @@ const Analytics = () => {
   const [selectedMetric, setSelectedMetric] = useState('applications');
 
   // API configuration
-  const api = axios.create({
-    baseURL: 'http://localhost:5000/api',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    }
-  });
+  // API is now imported from config/api.js
 
   // Fetch analytics data
   const fetchAnalyticsData = async () => {

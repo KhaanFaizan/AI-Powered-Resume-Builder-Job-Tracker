@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import axios from 'axios';
+import api from '../config/api';
 import toast from 'react-hot-toast';
 import './JobTracker.css';
 
@@ -33,13 +33,7 @@ const JobTracker = () => {
   });
 
   // API configuration
-  const api = axios.create({
-    baseURL: 'http://localhost:5000/api',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    }
-  });
+  // API is now imported from config/api.js
 
   // Fetch jobs and stats
   const fetchData = async () => {

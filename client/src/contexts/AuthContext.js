@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
-import axios from 'axios';
+import api from '../config/api';
 import toast from 'react-hot-toast';
 
 // Initial state
@@ -65,9 +65,9 @@ export const AuthProvider = ({ children }) => {
   // Set up axios defaults
   useEffect(() => {
     if (state.token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${state.token}`;
+      api.defaults.headers.common['Authorization'] = `Bearer ${state.token}`;
     } else {
-      delete axios.defaults.headers.common['Authorization'];
+      delete api.defaults.headers.common['Authorization'];
     }
   }, [state.token]);
 
@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }) => {
     const loadUser = async () => {
       if (state.token) {
         try {
-          const response = await axios.get('/api/auth/me');
+          const response = await api.get('/auth/me');
           dispatch({
             type: AUTH_ACTIONS.LOGIN_SUCCESS,
             payload: {
@@ -102,7 +102,7 @@ export const AuthProvider = ({ children }) => {
     try {
       dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: true });
       
-      const response = await axios.post('/api/auth/login', {
+          const response = await api.post('/auth/login', {
         email,
         password
       });
@@ -130,7 +130,7 @@ export const AuthProvider = ({ children }) => {
     try {
       dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: true });
       
-      const response = await axios.post('/api/auth/register', {
+          const response = await api.post('/auth/register', {
         name,
         email,
         password
@@ -154,6 +154,46 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Register admin function
+  const registerAdmin = async (name, email, password) => {
+    try {
+      dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: true });
+      
+          const response = await api.post('/auth/register-admin', {
+        name,
+        email,
+        password
+      });
+
+      const { user, token } = response.data.data;
+      
+      localStorage.setItem('token', token);
+      dispatch({
+        type: AUTH_ACTIONS.LOGIN_SUCCESS,
+        payload: { user, token }
+      });
+
+      toast.success('Admin registration successful!');
+      return { success: true };
+    } catch (error) {
+      const message = error.response?.data?.message || 'Admin registration failed';
+      toast.error(message);
+      dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: false });
+      return { success: false, error: message };
+    }
+  };
+
+  // Check if admin can be registered
+  const canRegisterAdmin = async () => {
+    try {
+        const response = await api.get('/auth/can-register-admin');
+      return response.data.data.canRegisterAdmin;
+    } catch (error) {
+      console.error('Error checking admin registration:', error);
+      return false;
+    }
+  };
+
   // Logout function
   const logout = () => {
     localStorage.removeItem('token');
@@ -165,6 +205,8 @@ export const AuthProvider = ({ children }) => {
     ...state,
     login,
     register,
+    registerAdmin,
+    canRegisterAdmin,
     logout
   };
 

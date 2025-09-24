@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import axios from 'axios';
+import api from '../config/api';
 import toast from 'react-hot-toast';
 import AIResultCards from './AIResultCards';
 import './AIAnalysis.css';
@@ -16,13 +16,7 @@ const AIAnalysis = () => {
   const [analysisData, setAnalysisData] = useState(null);
 
   // API configuration
-  const api = axios.create({
-    baseURL: 'http://localhost:5000/api',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    }
-  });
+  // API is now imported from config/api.js
 
   // Handle form input changes
   const handleInputChange = (e) => {

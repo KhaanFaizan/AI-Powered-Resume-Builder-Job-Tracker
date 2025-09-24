@@ -1,0 +1,39 @@
+services:
+  # Backend Service
+  - type: web
+    name: ai-resume-builder-api
+    env: node
+    plan: free
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        fromDatabase:
+          name: ai-resume-builder-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: HUGGINGFACE_API_KEY
+        sync: false
+      - key: PORT
+        value: 10000
+    healthCheckPath: /health
+
+  # Frontend Service
+  - type: web
+    name: ai-resume-builder-web
+    env: static
+    buildCommand: cd client && npm install && npm run build
+    staticPublishPath: ./client/build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://ai-resume-builder-api.onrender.com
+
+  # Database
+  - type: pserv
+    name: ai-resume-builder-db
+    plan: free
+    databaseName: ai_resume_builder
+    databaseUser: ai_resume_user

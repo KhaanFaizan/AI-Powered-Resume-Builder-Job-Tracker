@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import './AuthForm.css';
@@ -10,12 +10,22 @@ const LoginForm = () => {
   });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const [canRegisterAdmin, setCanRegisterAdmin] = useState(false);
 
-  const { login, loading } = useAuth();
+  const { login, loading, canRegisterAdmin: checkCanRegisterAdmin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
   const from = location.state?.from?.pathname || '/dashboard';
+
+  // Check if admin can be registered
+  useEffect(() => {
+    const checkAdminRegistration = async () => {
+      const canRegister = await checkCanRegisterAdmin();
+      setCanRegisterAdmin(canRegister);
+    };
+    checkAdminRegistration();
+  }, [checkCanRegisterAdmin]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -137,6 +147,14 @@ const LoginForm = () => {
               Sign up here
             </Link>
           </p>
+          {canRegisterAdmin && (
+            <p className="admin-register-text">
+              Need admin access?{' '}
+              <Link to="/register-admin" className="admin-link">
+                Register as Admin
+              </Link>
+            </p>
+          )}
         </div>
       </div>
     </div>
