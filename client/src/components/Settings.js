@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import api from '../config/api';
 import './Settings.css';
 
 const Settings = () => {
+  const { refreshUser } = useAuth();
   const [activeTab, setActiveTab] = useState('profile');
   const [loading, setLoading] = useState(false);
   const [settings, setSettings] = useState(null);
@@ -69,34 +72,26 @@ const Settings = () => {
   const loadSettings = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-      const response = await fetch('/api/settings', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setSettings(data.data);
-        
-        // Populate form states
-        if (data.data.profile) {
-          setProfile(data.data.profile);
-        }
-        if (data.data.notifications) {
-          setNotifications(data.data.notifications);
-        }
-        if (data.data.privacy) {
-          setPrivacy(data.data.privacy);
-        }
-        if (data.data.preferences) {
-          setPreferences(data.data.preferences);
-        }
-        if (data.data.security) {
-          setSecurity(data.data.security);
-        }
+      const response = await api.get('/settings');
+      const data = response.data;
+      
+      setSettings(data.data);
+      
+      // Populate form states
+      if (data.data.profile) {
+        setProfile(data.data.profile);
+      }
+      if (data.data.notifications) {
+        setNotifications(data.data.notifications);
+      }
+      if (data.data.privacy) {
+        setPrivacy(data.data.privacy);
+      }
+      if (data.data.preferences) {
+        setPreferences(data.data.preferences);
+      }
+      if (data.data.security) {
+        setSecurity(data.data.security);
       }
     } catch (error) {
       console.error('Error loading settings:', error);
@@ -114,53 +109,51 @@ const Settings = () => {
   const handleSave = async (section) => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-      let endpoint = '/api/settings';
+      let endpoint = '/settings';
       let data = {};
 
       switch (section) {
         case 'profile':
-          endpoint = '/api/settings/profile';
+          endpoint = '/settings/profile';
           data = profile;
           break;
         case 'notifications':
-          endpoint = '/api/settings/notifications';
+          endpoint = '/settings/notifications';
           data = notifications;
           break;
         case 'privacy':
-          endpoint = '/api/settings/privacy';
+          endpoint = '/settings/privacy';
           data = privacy;
           break;
         case 'preferences':
-          endpoint = '/api/settings/preferences';
+          endpoint = '/settings/preferences';
           data = preferences;
           break;
         case 'security':
-          endpoint = '/api/settings/security';
+          endpoint = '/settings/security';
           data = security;
           break;
         default:
           return;
       }
 
-      const response = await fetch(endpoint, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
+      const response = await api.put(endpoint, data);
 
-      if (response.ok) {
-        showMessage('success', `${section.charAt(0).toUpperCase() + section.slice(1)} updated successfully`);
-      } else {
-        const errorData = await response.json();
-        showMessage('error', errorData.message || 'Failed to update settings');
+      showMessage('success', `${section.charAt(0).toUpperCase() + section.slice(1)} updated successfully`);
+      
+      // If profile was updated, refresh user data in context
+      if (section === 'profile') {
+        const refreshResult = await refreshUser();
+        if (refreshResult.success) {
+          console.log('User data refreshed successfully');
+        } else {
+          console.error('Failed to refresh user data:', refreshResult.error);
+        }
       }
     } catch (error) {
       console.error('Error saving settings:', error);
-      showMessage('error', 'Failed to save settings');
+      const errorMessage = error.response?.data?.message || 'Failed to save settings';
+      showMessage('error', errorMessage);
     } finally {
       setLoading(false);
     }
@@ -169,36 +162,50 @@ const Settings = () => {
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     
+    // Client-side validation
+    if (!passwordForm.currentPassword) {
+      showMessage('error', 'Current password is required');
+      return;
+    }
+    
+    if (!passwordForm.newPassword) {
+      showMessage('error', 'New password is required');
+      return;
+    }
+    
+    if (passwordForm.newPassword.length < 6) {
+      showMessage('error', 'New password must be at least 6 characters long');
+      return;
+    }
+    
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
       showMessage('error', 'New passwords do not match');
       return;
     }
 
+    // Check password strength
+    const hasUpperCase = /[A-Z]/.test(passwordForm.newPassword);
+    const hasLowerCase = /[a-z]/.test(passwordForm.newPassword);
+    const hasNumbers = /\d/.test(passwordForm.newPassword);
+    
+    if (!hasUpperCase || !hasLowerCase || !hasNumbers) {
+      showMessage('error', 'New password must contain at least one uppercase letter, one lowercase letter, and one number');
+      return;
+    }
+
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-      const response = await fetch('/api/settings/password', {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          currentPassword: passwordForm.currentPassword,
-          newPassword: passwordForm.newPassword
-        })
+      const response = await api.put('/settings/password', {
+        currentPassword: passwordForm.currentPassword,
+        newPassword: passwordForm.newPassword
       });
 
-      if (response.ok) {
-        showMessage('success', 'Password changed successfully');
-        setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
-      } else {
-        const errorData = await response.json();
-        showMessage('error', errorData.message || 'Failed to change password');
-      }
+      showMessage('success', 'Password changed successfully');
+      setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
     } catch (error) {
       console.error('Error changing password:', error);
-      showMessage('error', 'Failed to change password');
+      const errorMessage = error.response?.data?.message || 'Failed to change password';
+      showMessage('error', errorMessage);
     } finally {
       setLoading(false);
     }
@@ -206,25 +213,20 @@ const Settings = () => {
 
   const handleExportData = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('/api/settings/export', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+      const response = await api.get('/settings/export', {
+        responseType: 'blob'
       });
 
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `user-data-${Date.now()}.json`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-        showMessage('success', 'Data exported successfully');
-      }
+      const blob = new Blob([response.data]);
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `user-data-${Date.now()}.json`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      showMessage('success', 'Data exported successfully');
     } catch (error) {
       console.error('Error exporting data:', error);
       showMessage('error', 'Failed to export data');
@@ -761,6 +763,15 @@ const SecuritySection = ({ security, setSecurity, passwordForm, setPasswordForm,
                 placeholder="Enter new password"
                 required
               />
+              <div className="password-requirements">
+                <small>Password must contain:</small>
+                <ul>
+                  <li>At least 6 characters</li>
+                  <li>One uppercase letter (A-Z)</li>
+                  <li>One lowercase letter (a-z)</li>
+                  <li>One number (0-9)</li>
+                </ul>
+              </div>
             </div>
             <div className="form-group">
               <label htmlFor="confirmPassword">Confirm Password</label>

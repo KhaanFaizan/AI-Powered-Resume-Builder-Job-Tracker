@@ -68,6 +68,7 @@ const updateProfile = async (req, res) => {
     const userId = req.user.id;
     const { firstName, lastName, phone, location, bio, website, linkedin, github } = req.body;
     
+    // Update UserSettings
     const settings = await UserSettings.findOneAndUpdate(
       { user: userId },
       { 
@@ -84,6 +85,16 @@ const updateProfile = async (req, res) => {
       },
       { new: true, upsert: true, runValidators: true }
     );
+
+    // Update User model with new name for dashboard display
+    if (firstName || lastName) {
+      const fullName = `${firstName || ''} ${lastName || ''}`.trim();
+      await User.findByIdAndUpdate(
+        userId,
+        { name: fullName },
+        { new: true }
+      );
+    }
     
     res.json({
       success: true,

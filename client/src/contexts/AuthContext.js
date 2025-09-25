@@ -15,7 +15,8 @@ const AUTH_ACTIONS = {
   LOGIN_SUCCESS: 'LOGIN_SUCCESS',
   LOGOUT: 'LOGOUT',
   SET_LOADING: 'SET_LOADING',
-  AUTH_ERROR: 'AUTH_ERROR'
+  AUTH_ERROR: 'AUTH_ERROR',
+  UPDATE_USER: 'UPDATE_USER'
 };
 
 // Reducer
@@ -48,6 +49,12 @@ const authReducer = (state, action) => {
         user: null,
         token: null,
         isAuthenticated: false,
+        loading: false
+      };
+    case AUTH_ACTIONS.UPDATE_USER:
+      return {
+        ...state,
+        user: { ...state.user, ...action.payload },
         loading: false
       };
     default:
@@ -194,6 +201,32 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Update user function
+  const updateUser = (userData) => {
+    dispatch({
+      type: AUTH_ACTIONS.UPDATE_USER,
+      payload: userData
+    });
+  };
+
+  // Refresh user data from server
+  const refreshUser = async () => {
+    if (state.token) {
+      try {
+        const response = await api.get('/auth/me');
+        dispatch({
+          type: AUTH_ACTIONS.UPDATE_USER,
+          payload: response.data.data.user
+        });
+        return { success: true };
+      } catch (error) {
+        console.error('Error refreshing user:', error);
+        return { success: false, error: error.message };
+      }
+    }
+    return { success: false, error: 'No token available' };
+  };
+
   // Logout function
   const logout = () => {
     localStorage.removeItem('token');
@@ -207,6 +240,8 @@ export const AuthProvider = ({ children }) => {
     register,
     registerAdmin,
     canRegisterAdmin,
+    updateUser,
+    refreshUser,
     logout
   };
 

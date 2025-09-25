@@ -325,6 +325,43 @@
   min-height: 100px;
 }
 
+/* Password Requirements */
+.password-requirements {
+  margin-top: 0.5rem;
+  padding: 1rem;
+  background: rgba(97, 218, 251, 0.1);
+  border: 1px solid rgba(97, 218, 251, 0.3);
+  border-radius: 8px;
+  font-size: 0.875rem;
+}
+
+.password-requirements small {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.password-requirements ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  list-style: none;
+}
+
+.password-requirements li {
+  position: relative;
+  margin-bottom: 0.25rem;
+  color: #64748b;
+}
+
+.password-requirements li::before {
+  content: "✓";
+  position: absolute;
+  left: -1.2rem;
+  color: #10b981;
+  font-weight: bold;
+}
+
 /* Toggle Groups */
 .notification-group,
 .security-group,
