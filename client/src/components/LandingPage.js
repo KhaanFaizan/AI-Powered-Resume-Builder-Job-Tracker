@@ -41,16 +41,16 @@ const LandingPage = () => {
             <div className="resume-preview">
               <div className="resume-header">
                 <div className="avatar"></div>
-                <div className="name-placeholder">John Doe</div>
-                <div className="title-placeholder">Software Engineer</div>
+                <div className="name-placeholder">Faizan Khan</div>
+                <div className="title-placeholder">Full Stack Developer</div>
               </div>
               <div className="resume-sections">
                 <div className="section">
                   <div className="section-title">Experience</div>
                   <div className="section-content">
                     <div className="experience-item">
-                      <div className="job-title">Senior Developer</div>
-                      <div className="company">Tech Corp</div>
+                      <div className="job-title">Web Developer</div>
+                      <div className="company">KDD</div>
                     </div>
                   </div>
                 </div>
@@ -59,7 +59,8 @@ const LandingPage = () => {
                   <div className="skills">
                     <span className="skill-tag">React</span>
                     <span className="skill-tag">Node.js</span>
-                    <span className="skill-tag">Python</span>
+                    <span className="skill-tag">MERN</span>
+                    <span className="skill-tag">Java</span>
                   </div>
                 </div>
               </div>
