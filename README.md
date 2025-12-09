@@ -9,9 +9,9 @@ A comprehensive MERN stack application that leverages artificial intelligence to
 ![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green?style=for-the-badge&logo=mongodb)
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Online-brightgreen?style=for-the-badge&logo=render)](https://ai-powered-resume-builder-job-tracker.onrender.com/)
 
-## ✨ Features
+##  Features
 
-### 🎯 Core Functionality
+###  Core Functionality
 - **AI-Powered Resume Analysis** - Get intelligent feedback on your resume using HuggingFace models
 - **Job Application Tracker** - Manage and track all your job applications in one place
 - **Match Score Calculation** - See how well your resume matches job requirements
@@ -19,13 +19,13 @@ A comprehensive MERN stack application that leverages artificial intelligence to
 - **User Authentication** - Secure login and registration system
 - **Admin Dashboard** - Complete admin panel for user and system management
 
-### 🤖 AI Features
+###  AI Features
 - **Resume Summarization** - Using `facebook/bart-large-cnn` model
 - **Missing Keywords Detection** - Using `google/flan-t5-base` model
 - **Match Score Analysis** - Intelligent scoring system
 - **Improvement Suggestions** - AI-generated recommendations
 
-### 👑 Admin Features
+###  Admin Features
 - **User Management** - View, manage, and control user accounts
 - **System Analytics** - Comprehensive system statistics and monitoring
 - **Job Application Overview** - Monitor all job applications across users
@@ -34,16 +34,16 @@ A comprehensive MERN stack application that leverages artificial intelligence to
 
 ## 🌐 Live Demo
 
-**🚀 [Try the AI Resume Builder Now!](https://ai-powered-resume-builder-job-tracker.onrender.com/)**
+** [Try the AI Resume Builder Now!](https://ai-powered-resume-builder-job-tracker.onrender.com/)**
 
 Experience the full application with all features:
-- ✅ User Registration & Login
-- ✅ AI Resume Analysis
-- ✅ Job Application Tracking
-- ✅ Professional Analytics
-- ✅ Admin Dashboard (for admin users)
+-  User Registration & Login
+-  AI Resume Analysis
+-  Job Application Tracking
+-  Professional Analytics
+-  Admin Dashboard (for admin users)
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 ### Frontend
 - **React 18** - Modern UI library
@@ -69,7 +69,7 @@ Experience the full application with all features:
 ### Database
 - **MongoDB Atlas** - Cloud database service
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 - Node.js (v18 or higher)
@@ -124,7 +124,7 @@ Experience the full application with all features:
    - Frontend: http://localhost:3000
    - Backend API: http://localhost:5000
 
-## 📱 Usage
+## Usage
 
 ### For Regular Users
 1. **Register/Login** - Create an account or sign in
@@ -140,7 +140,7 @@ Experience the full application with all features:
 4. **Analytics Dashboard** - View comprehensive system statistics
 5. **Job Overview** - Monitor all job applications
 
-## 🔧 API Endpoints
+##  API Endpoints
 
 ### Authentication
 - `POST /api/auth/register` - User registration
@@ -182,7 +182,7 @@ Experience the full application with all features:
 - `GET /api/admin/jobs` - All job applications
 - `GET /api/admin/logs` - System logs
 
-## 🎨 UI/UX Features
+##  UI/UX Features
 
 ### Design System
 - **Modern Interface** - Clean, professional design
@@ -199,7 +199,7 @@ Experience the full application with all features:
 - **Settings** - User preferences
 - **Admin Panel** - System administration
 
-## 🔒 Security Features
+##  Security Features
 
 - **JWT Authentication** - Secure token-based authentication
 - **Password Hashing** - bcrypt encryption
@@ -208,7 +208,7 @@ Experience the full application with all features:
 - **CORS Protection** - Cross-origin request security
 - **Environment Variables** - Secure configuration
 
-## 📊 Database Schema
+##  Database Schema
 
 ### User Model
 ```javascript
@@ -262,7 +262,7 @@ Experience the full application with all features:
 }
 ```
 
-## 🚀 Deployment
+##  Deployment
 
 ### Frontend (Netlify/Vercel)
 1. Build the React app: `npm run build`
@@ -284,7 +284,7 @@ NODE_ENV=production
 PORT=5000
 ```
 
-## 🤝 Contributing
+##  Contributing
 
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature-name`
@@ -296,21 +296,21 @@ PORT=5000
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👨‍💻 Author
+##  Author
 
 **Faizan**
 - GitHub: [@faizanlearner](https://github.com/faizanlearner)
 - LinkedIn: [Faizan's LinkedIn](https://linkedin.com/in/faizanlearner)
 - Email: faizan.learner@gmail.com
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - [HuggingFace](https://huggingface.co/) for AI model APIs
 - [React](https://reactjs.org/) for the amazing frontend library
 - [MongoDB](https://www.mongodb.com/) for the database
 - [Express.js](https://expressjs.com/) for the backend framework
 
-## 📈 Roadmap
+##  Roadmap
 
 - [ ] Resume templates
 - [ ] PDF export functionality
@@ -321,7 +321,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [ ] AI-powered cover letter generation
 - [ ] Interview preparation tools
 
-## 🐛 Bug Reports
+##  Bug Reports
 
 If you find a bug, please open an issue with:
 - Description of the bug
@@ -329,7 +329,7 @@ If you find a bug, please open an issue with:
 - Expected vs actual behavior
 - Screenshots if applicable
 
-## 💡 Feature Requests
+##  Feature Requests
 
 Have an idea? We'd love to hear it! Please open an issue with:
 - Detailed description
